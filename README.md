@@ -1,4 +1,4 @@
-# chy.stat api documentation
+# chy.stat API documentation
 
 We are offering a RESTful API to our [chy.stat](https://www.chystat.com) application. Please be aware that the API and its
 
@@ -9,7 +9,7 @@ are currently under development and as such it's very likely they will evolve or
 
 ## API sections
 
-The API is broken into sections. A section is a part of chy.stat application or a group of tasks that make up a logical unit.
+The API is broken into sections. A section is a part of the chy.stat application or a group of tasks that make up a logical unit.
 Each section has is own URL path and documentation.
  
 - [AQDEF upload](UploadAPI.md)
