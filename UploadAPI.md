@@ -4,7 +4,7 @@ Using this REST API a client is able to upload an AQDEF file to the [chy.stat](h
 
 - [What is AQDEF](#what-is-aqdef)
 - [Authentication](#authentication)
-- [Request parameters](#request-parameters)
+- [Request](#request)
 - [Response](#response)
 - [Error codes](#error-codes)
 
@@ -21,10 +21,11 @@ For authentication we are using [JWT (JSON Web Tokens)](https://jwt.io).
 Note that there is no login mechanism in chy.stat API where the client would obtain a token, so the client is responsible for generating the token itself.
 The token must meet some specific criteria, otherwise the request will be rejected with an appropriate [response](#response).
 
-We are expecting the token in form of Base64 encoded strings joined together as 
+We are expecting the token in a form of Base64 encoded strings joined together as 
 
-`Base64(Header).Base64(Payload).Base64(Signature)`
+`Bearer Base64(Header).Base64(Payload).Base64(Signature)`
 
+The keyword `Bearer` is part of the JWT specification, so we are following it.
 The token must be sent in `Authorization` request header. See [request parameters](#request-parameters) section below.
 
 ### JWT Header
@@ -53,7 +54,70 @@ where the token was created. It will be used for validating the token age. By de
 
 We accept only HS256 algorithm used for signing the token.
 
-## Request parameters
+## Request
+
+There is only one available URL for the AQDEF upload API 
+
+**/api/upload**
+
+We are expecting here multipart POST requests with appropriate [request parameters](#request-parameters) when uploading AQDEF files.
+
+### Request parameters
+
+Header:
+
+Parameter      | Description      | Required        | Content example
+-------------- | ---------------- | --------------- | -------------------------------------------------------------------------------
+Authorization  | Contains JWT     | **required**    | Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUz.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXcYW3RnW
+
+Body (multipart/form):
+
+Parameter      | Description                                  | Required                  | Content example
+-------------- | -------------------------------------------- | ------------------------- | ------------------------------------
+datasourceId   | Targed datasource ID                         | **required**              | 31944cd8-fab8-4b0d-a866-39e82d7ce40d
+aqdefFile      | AQDEF text file                              | **required**              | 
+path           | Path relative to a virtual target directory  | **required**              | AP125/B02/test.DFQ
+charset        | AQDEF file encoding                          | optional (default UTF-8)  | cp1250
+
+#### datasourceId
+
+You have to tell which datasource you are uploading files to.
+
+#### aqdefFile
+
+It's the file you are uploading.
+
+#### path
+
+When uploading an AQDEF file, you can tell a relative path where the file will be read from at the server side.
+The path **MUST** at least contain name of the file.
+
+#### charset
+
+Character encoding used for AQDEF file encoding
+
+#### An example POST request
+
+```
+POST /chystat/api/upload HTTP/1.1
+Host: my.domain.com
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUz.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXcYW3RnW
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="datasourceId"
+
+31944cd8-fab8-4b0d-a866-39e82d7ce40d
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="aqdefFile"; filename="test.DFQ"
+Content-Type: 
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="path"
+
+AP125/B02/test.DFQ
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+```
 
 ## Response
 
