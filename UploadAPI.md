@@ -79,7 +79,7 @@ aqdefFile      | **required**    |
 path           | **required**    | AP125/B02/test.DFQ
 charset        | optional        | cp1250
 
-##### Authorization
+#### Authorization
 
 Contains JWT. To create its signature part you need to use the HS256 algorithm with a secret key. To get that key you need to
 
@@ -88,21 +88,21 @@ Contains JWT. To create its signature part you need to use the HS256 algorithm w
 - select a target **Upload**
 - go to its **Data Sources** tab and select or create an API datasource
 
-##### datasourceId
+#### datasourceId
 
 The datasource to which is client uploading files to. 
 To get that ID follow instructions from [Authorization header](#authorization) above.
 
-##### aqdefFile
+#### aqdefFile
 
 It's the uploaded file itself.
 
-##### path
+#### path
 
 When uploading an AQDEF file, you can tell a relative path where the file will be read from at the server side.
 The path **MUST** at least contain name of the file. This is the most common scenario.
 
-##### charset
+#### charset
 
 Character encoding used for AQDEF file encoding. Default is UTF-8.
 
