@@ -1,6 +1,8 @@
 # AQDEF upload API
 
 Using this REST API a client is able to upload an AQDEF file to the [chy.stat](https://www.chystat.com) application.
+Note that the AQDEF upload API is designed to be asynchronous. It means when you post an AQDEF file,
+there is no guaranteed time when the file will be uploaded by the chy.stat uploading system.
 
 - [What is AQDEF](#what-is-aqdef)
 - [Authentication](#authentication)
@@ -30,7 +32,7 @@ The token must be sent in `Authorization` request header. See [request parameter
 
 ### JWT Header
 
-Header is a standard JWT header where is defined token type and algorithm. 
+Header is a standard JWT header where is defined the token type and an algorithm used to create its signature. 
 
 ```json
 {
@@ -56,52 +58,60 @@ We accept only HS256 algorithm used for signing the token.
 
 ## Request
 
-There is only one available URL for the AQDEF upload API 
+There is only one available URL for the AQDEF upload API - **api/upload**
 
-**/api/upload**
-
-We are expecting here multipart POST requests with appropriate [request parameters](#request-parameters) when uploading AQDEF files.
+We are expecting here a multipart POST requests with appropriate [request parameters](#request-parameters) when uploading AQDEF files.
 
 ### Request parameters
 
 Header:
 
-Parameter      | Description      | Required        | Content example
--------------- | ---------------- | --------------- | -------------------------------------------------------------------------------
-Authorization  | Contains JWT     | **required**    | Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUz.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXcYW3RnW
+Parameter      | Required        | Content example
+-------------- | --------------- | -------------------------------------------------------------------
+Authorization  | **required**    | Bearer eyJ0eXAiOiJKV1QiLCJhbGci.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXc
+
+#### Authorization
+
+Contains JWT. To create its signature part you need to use the HS256 algorithm with a secret key. To get that key you need to
+
+- login to a chy.stat application with admin rights
+- go to section **System settings** :arrow_right: **General** :arrow_right: **Upload**
+- select a target **Upload**
+- go to its **Data Sources** tab and select or create an API datasource
 
 Body (multipart/form):
 
-Parameter      | Description                                  | Required                  | Content example
--------------- | -------------------------------------------- | ------------------------- | ------------------------------------
-datasourceId   | Targed datasource ID                         | **required**              | 31944cd8-fab8-4b0d-a866-39e82d7ce40d
-aqdefFile      | AQDEF text file                              | **required**              | 
-path           | Path relative to a virtual target directory  | **required**              | AP125/B02/test.DFQ
-charset        | AQDEF file encoding                          | optional (default UTF-8)  | cp1250
+Parameter      | Required                  | Content example
+-------------- | ------------------------- | ------------------------------------
+datasourceId   | **required**              | 31944cd8-fab8-4b0d-a866-39e82d7ce40d
+aqdefFile      | **required**              | 
+path           | **required**              | AP125/B02/test.DFQ
+charset        | optional (default UTF-8)  | cp1250
 
 #### datasourceId
 
-You have to tell which datasource you are uploading files to.
+The datasource to which is client uploading files to. 
+To get that ID follow instructions from [Authorization header](#authorization) above.
 
 #### aqdefFile
 
-It's the file you are uploading.
+It's the uploaded file.
 
 #### path
 
 When uploading an AQDEF file, you can tell a relative path where the file will be read from at the server side.
-The path **MUST** at least contain name of the file.
+The path **MUST** at least contain name of the file. This is the most common scenario.
 
 #### charset
 
-Character encoding used for AQDEF file encoding
+Character encoding used for AQDEF file encoding.
 
 #### An example POST request
 
 ```
 POST /chystat/api/upload HTTP/1.1
 Host: my.domain.com
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUz.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXcYW3RnW
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGci.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXc
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
