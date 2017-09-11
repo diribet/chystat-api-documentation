@@ -1,6 +1,6 @@
 # AQDEF upload API
 
-Using this REST API a client is able to upload an AQDEF file to the [chy.stat](https://www.chystat.com) application.
+Using this REST API a client is able to post an AQDEF file to a target upload within a [chy.stat](https://www.chystat.com) application.
 Note that the AQDEF upload API is designed to be asynchronous. It means when you post an AQDEF file,
 there is no guaranteed time when the file will be uploaded by the chy.stat uploading system.
 
@@ -20,7 +20,7 @@ We are providing an open-source Java library for working with this format. See [
 ## Authentication
 
 For authentication we are using [JWT (JSON Web Tokens)](https://jwt.io).
-Note that there is no login mechanism in chy.stat API where the client would obtain a token, so the client is responsible for generating the token itself.
+There is no login mechanism in chy.stat API where a client would obtain a token, so the client is responsible for generating the token itself.
 The token must meet some specific criteria, otherwise the request will be rejected with an appropriate [response](#response).
 
 We are expecting the token in a form of Base64 encoded strings joined together as 
@@ -68,41 +68,41 @@ Header
 
 Parameter      | Required        | Content example
 -------------- | --------------- | -------------------------------------------------------------------
-Authorization  | **required**    | Bearer eyJ0eXAiOiJKV1QiLCJhbGci.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXc
+Authorization  | required        | Bearer eyJ0eXAiOiJKV1QiLCJhbGci.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXc
 
 Body (multipart/form)
 
 Parameter      | Required        | Content example
 -------------- | --------------- | ------------------------------------
-datasourceId   | **required**    | 31944cd8-fab8-4b0d-a866-39e82d7ce40d
-aqdefFile      | **required**    | 
-path           | **required**    | AP125/B02/test.DFQ
+datasourceId   | required        | 31944cd8-fab8-4b0d-a866-39e82d7ce40d
+aqdefFile      | required        | 
+path           | required        | AP125/B02/test.DFQ
 charset        | optional        | cp1250
 
-#### Authorization
+#### Parameter "Authorization"
 
 Contains JWT. To create its signature part you need to use the HS256 algorithm with a secret key. To get that key you need to
 
 - login to a chy.stat application with admin rights
-- go to section **System settings** :arrow_right: **General** :arrow_right: **Upload**
-- select a target **Upload**
-- go to its **Data Sources** tab and select or create an API datasource
+- go to section *System settings* :arrow_right: *General* :arrow_right: *Upload*
+- select a target *Upload*
+- go to its *Data Sources* tab and select or create an API datasource
 
-#### datasourceId
+#### Parameter "datasourceId"
 
 The datasource to which is client uploading files to. 
 To get that ID follow instructions from [Authorization header](#authorization) above.
 
-#### aqdefFile
+#### Parameter "aqdefFile"
 
 It's the uploaded file itself.
 
-#### path
+#### Parameter "path"
 
 When uploading an AQDEF file, you can tell a relative path where the file will be read from at the server side.
-The path **MUST** at least contain name of the file. This is the most common scenario.
+The path must at least contain name of the file. It's the most common scenario.
 
-#### charset
+#### Parameter "charset"
 
 Character encoding used for AQDEF file encoding. Default is UTF-8.
 
@@ -136,7 +136,7 @@ Since the AQDEF upload API is designed to be asynchronous, we provide only two t
 - HTTP 200 OK - upload request has been accepted and the file will be uploaded as soon as possible
 - HTTP 40x/50x - upload request has been rejected
 
-In case of rejection, the response contains a JSON body with an specific API [error code](#error-codes) and a message.
+In case of rejection, the response contains a JSON body with a specific API [error code](#error-codes) and a message.
 
 ```json
 {
