@@ -67,8 +67,8 @@ We are expecting here a multipart POST requests with appropriate [request parame
 Header
 
 Parameter      | Required        | Content example
--------------- | --------------- | -------------------------------------------------------------------
-Authorization  | required        | Bearer eyJ0eXAiOiJKV1QiLCJhbGci.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXc
+-------------- | --------------- | ---------------------------------------------------------------------------
+Authorization  | required        | Bearer eyJ0eXAiOiJKV1QiLCJhbGci8IJW.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXcOe4c
 
 Body (multipart/form)
 
@@ -91,7 +91,7 @@ Contains JWT. To create its signature part you need to use the HS256 algorithm w
 #### Parameter "datasourceId"
 
 The datasource to which is client uploading files to. 
-To get that ID follow instructions from [Authorization header](#authorization) above.
+To get that ID follow instructions from [Authorization header](#parameter-authorization) above.
 
 #### Parameter "aqdefFile"
 
@@ -111,7 +111,7 @@ Character encoding used for AQDEF file encoding. Default is UTF-8.
 ```
 POST /chystat/api/upload HTTP/1.1
 Host: my.domain.com
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGci.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXc
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGci8IJW.e30.0LHZndaAoGVj7BDgj8wHRqR7ApyJpXcOe4c
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
