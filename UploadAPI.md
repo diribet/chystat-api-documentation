@@ -58,7 +58,7 @@ We accept only HS256 algorithm used for signing the token.
 
 ## Request
 
-There is only one available URL for the AQDEF upload API - **api/upload**
+There is only one available URL for the AQDEF upload API - **api/v1/upload**
 
 We are expecting here a multipart POST requests with appropriate [request parameters](#request-parameters) when uploading AQDEF files.
 
